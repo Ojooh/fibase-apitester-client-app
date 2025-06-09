@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "paths": {
+            "@/*": ["./src/*"],
+            "@ui/*": ["/Users/ojooh/Documents/Projects/fi-ui-toolkit"]
+        }
+    },
+    "exclude": ["node_modules", "dist"]
+}

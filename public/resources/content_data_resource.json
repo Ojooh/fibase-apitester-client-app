@@ -1,0 +1,33 @@
+{
+    "meta_data": {
+        "title_text": "FIBASE-APITESTER - Fast-fire API testing",
+        "description_text": "fibase-apitester is a lightweight Vue 3 + Vite-based frontend interface for interactively testing API endpoints within a Node.js application. It functions similarly to Swagger UI but is designed to be fully customizable, developer-friendly, and embeddable. The app allows viewing, editing, and testing HTTP methods, query parameters, headers, and JSON payloads, with real-time display of response data.",
+        "keywords_text": "vue3, vite, api-tester, swagger-ui-alternative, api playground, express, frontend tools, tailwindcss, devtools, http client, json viewer, developer ui, restful api, endpoint testing",
+        "author_text": "FiberX Innovations Ltd.",
+        "icon_logo_link": "/assets/img/ico/logo.ico"
+    },
+    "top_bar_ui": {
+        "title_text": "API Tester",
+        "image_src_link": "/assets/img/logo/logo_1.png",
+        "img_alt_text": "Logo Image"
+    },
+    "footer_ui": {
+        "powered_by_text": "Powered by",
+        "author_text": "FiberX Innovations Ltd."
+    },
+    "api_list_view": {
+        "endpoint_detail": {
+            "fieldset": {
+                "headers_label_text": "Headers",
+                "headers_placeholder_text": "Header Configuration",
+                "query_params_label_text": "Query Parameters:",
+                "query_params_placeholder_text": "Query Parameters",
+                "body_label_text": "Body",
+                "body_placeholder_text": "Body",
+                "submit_btn_text": "Send Request"
+            },
+            "response_header_title_text": "Response header",
+            "response_body_title_text": "Response Body"
+        }
+    }
+}

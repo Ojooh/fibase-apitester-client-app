@@ -1,0 +1,54 @@
+{
+    "name": "fibase-apitester-client-app",
+    "version": "0.0.1",
+    "description": "fibase-apitester is a lightweight Vue 3 + Vite-based frontend interface for interactively testing API endpoints within a Node.js application. It functions similarly to Swagger UI but is designed to be fully customizable, developer-friendly, and embeddable. The app allows viewing, editing, and testing HTTP methods, query parameters, headers, and JSON payloads, with real-time display of response data.",
+    "private": true,
+    "scripts": {
+        "dev": "vite --config ./vite.config.mjs",
+        "devcss": "npx @tailwindcss/cli -i ./public/assets/css/input.css -o ./public/assets/css/output.css --watch",
+        "build": "vite build --config ./vite.config.mjs",
+        "preview": "vite preview --config ./vite.config.mjs",
+        "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+        "format": "prettier --write src/"
+    },
+    "author": "FiberX Innovations",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/fiberx-innovations/fibase-apitester-client-app.git"
+    },
+    "keywords": [
+        "vue3",
+        "vite",
+        "api-tester",
+        "swagger-ui-alternative",
+        "api playground",
+        "express",
+        "frontend tools",
+        "tailwindcss",
+        "devtools",
+        "http client",
+        "json viewer",
+        "developer ui",
+        "restful api",
+        "endpoint testing"
+    ],
+    "dependencies": {
+        "@tailwindcss/postcss": "^4.1.8",
+        "@tailwindcss/vite": "^4.1.8",
+        "axios": "^1.6.7",
+        "flowbite": "^2.3.0",
+        "flowbite-datepicker": "^1.2.6",
+        "js-cookie": "^3.0.5",
+        "moment": "^2.30.1",
+        "postcss": "^8.5.4",
+        "socket.io-client": "^4.8.1",
+        "vue": "^3.5.13",
+        "vue-router": "^4.3.0"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^5.2.3",
+        "tailwindcss": "^4.1.8",
+        "vite": "^6.3.5"
+    }
+}
