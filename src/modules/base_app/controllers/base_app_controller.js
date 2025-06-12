@@ -1,5 +1,6 @@
 import { markRaw, getCurrentInstance } from "vue";
 
+import LoggerUtil from "@ui/Logger/logger_util.js";
 import AppHeaderUI from "@ui/DocumentBase/Header/app_header_ui.vue";
 import AppMainUI from "@ui/DocumentBase/Main/app_main_ui.vue";
 import AppFooterUI from "@ui/DocumentBase/Footer/app_footer_ui.vue";
@@ -12,7 +13,8 @@ class BaseAppController {
     constructor() {
         this.name                   = "base_app_controller";
         this.vm                     = null; 
-        this.content_manager        = null
+        this.content_manager        = null;
+        this.logger                 = new LoggerUtil({ prefix: this.name?.toUpperCase() });
     }
 
     // Method to get footer copy right props
@@ -63,47 +65,35 @@ class BaseAppController {
     };
 
     // Computed variables
-    getAppComputedVariables = () => {
-        return {
-            exampleComputed() {
-                return this.example_state + ' - computed';
-            },
-        };
-    };
+    getAppComputedVariables = () => { return {}; };
 
     // Watchers
-    getAppWatchers = () => {
-        return {
-            example_state(newVal, oldVal) {
-                console.log('State changed:', oldVal, '->', newVal);
-            },
-        };
-    };
+    getAppWatchers = () => { return {}; };
 
     // Lifecycle: created
     handleOnCreatedLogic = () => {
         try {
-            console.log(`[Created] Component ${this.name} has been created`);
+            this.logger.log(`[Created] Component ${this.name} has been created`);
         } catch (error) {
-            console.error(`[Created] Error in Component ${this.name}:`, error);
+            this.logger.error(`[Created] Error in Component ${this.name}:`, error);
         }
     };
 
     // Lifecycle: mounted
     handleOnMountedLogic = () => {
         try {
-            console.log(`[Mounted] Component ${this.name} has been mounted`);
+            this.logger.log(`[Mounted] Component ${this.name} has been mounted`);
         } catch (error) {
-            console.error(`[Mounted] Error in Component ${this.name}:`, error);
+            this.logger.error(`[Mounted] Error in Component ${this.name}:`, error);
         }
     };
 
     // Lifecycle: beforeUnmount
     handleBeforeUnmountedLogic = () => {
         try {
-            console.log(`[BeforeUnmount] Component ${this.name} will unmount`);
+            this.logger.log(`[BeforeUnmount] Component ${this.name} will unmount`);
         } catch (error) {
-            console.error(`[BeforeUnmount] Error in component ${this.name}:`, error);
+            this.logger.error(`[BeforeUnmount] Error in component ${this.name}:`, error);
         }
     };
 

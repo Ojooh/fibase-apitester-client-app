@@ -1,0 +1,8 @@
+const LOCAL_STORAGE_KEY_FIELD_NAMES = {
+    DEVICE_ID: "kiop3JKLd",
+    DEVICE_NAME: "okcf8959"
+}
+
+export default {
+    LOCAL_STORAGE_KEY_FIELD_NAMES
+}

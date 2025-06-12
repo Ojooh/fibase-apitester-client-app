@@ -20,8 +20,10 @@
             "fieldset": {
                 "headers_label_text": "Headers",
                 "headers_placeholder_text": "Header Configuration",
-                "query_params_label_text": "Query Parameters:",
-                "query_params_placeholder_text": "Query Parameters",
+                "query_label_text": "Query Parameters:",
+                "query_placeholder_text": "Query Parameters",
+                "params_label_text": "URL Parameters:",
+                "params_placeholder_text": "URL Parameters",
                 "body_label_text": "Body",
                 "body_placeholder_text": "Body",
                 "submit_btn_text": "Send Request"

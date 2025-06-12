@@ -65,6 +65,21 @@ class DeviceFingerprintUtil {
             return '';
         }
     };
+
+    // ✅ New Method: Best-guess device name from user agent
+    getDeviceName = () => {
+        const ua = navigator.userAgent;
+
+        if (/windows phone/i.test(ua)) return "Windows Phone";
+        if (/android/i.test(ua)) return /mobile/i.test(ua) ? "Android Phone" : "Android Tablet";
+        if (/iPad|Macintosh/i.test(ua) && 'ontouchend' in document) return "iPad"; // iPad on iOS 13+ appears as Mac
+        if (/iPhone/i.test(ua)) return "iPhone";
+        if (/Macintosh/i.test(ua)) return "Mac";
+        if (/Windows NT/i.test(ua)) return "Windows PC";
+        if (/Linux/i.test(ua)) return "Linux";
+
+        return "Unknown Device";
+    };
 }
 
 export default DeviceFingerprintUtil;

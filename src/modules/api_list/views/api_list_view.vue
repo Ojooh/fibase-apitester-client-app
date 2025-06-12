@@ -3,9 +3,19 @@
         <XBarLoaderUI v-if="loading" />
 
         <div v-else-if="!loading" class="w-full py-4 block">
-            <AccordionUI v-bind="accordion_prop({}, 1)">
-                <EndpointDetailUI :endpoint="{}" :index="1" />
-            </AccordionUI>
+
+            <div v-for="(group, index) in Object.keys(route_groups)" :key="index" class="w-full block my-8">
+                <h4 class="w-full truncate font-bold capitalize">
+                    {{  group }}
+                </h4>
+                <AccordionUI 
+                v-for="(endpoint, endpoint_index) in route_groups[group]" 
+                :key="endpoint_index"
+                v-bind="accordion_prop(group, endpoint, endpoint_index)">
+                    <EndpointDetailUI :endpoint="endpoint" :index="endpoint_index" />
+                </AccordionUI>
+            </div>
+            
         </div>
 
     </div>

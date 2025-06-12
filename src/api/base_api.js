@@ -10,6 +10,7 @@ class BaseAPI {
         this.is_production      = this.ENV?.VITE_MODE === "production";
         this.is_staging         = this.ENV?.VITE_MODE === "staging";
         this.helper             = new HelperUtil(this.ENV);
+        this.device_util        = this.helper?.device_fingerprint_util;
         
         this.setAPIBaseInsance();
     }
@@ -26,7 +27,6 @@ class BaseAPI {
         // Attach interceptors to the Axios instance
         this.api_instance.interceptors.request.use(this.setTokenRefreshInterceptor);
     }
-
 
     queryAPI = async (config) => {
         try {
@@ -54,8 +54,36 @@ class BaseAPI {
         }
     }
 
+    getDeviceHeaders = () => {
+        const local_id_key      = "DEVICE_ID";
+        const local_name_key    = "DEVICE_NAME";
+        let device_id           = localStorage.getItem(local_id_key);
+        let device_name         = localStorage.getItem(local_name_key);
+
+        // Generate and store if not already set
+        if (!device_id && this.device_util) {
+            device_id       = this.device_util.generateFingerprint();
+            device_name     = this.device_util.getDeviceName();
+
+            localStorage.setItem(local_id_key, device_id);
+            localStorage.setItem(local_name_key, this.device_name);
+        }
+
+        return { device_id, device_name };
+    }
+
     setTokenRefreshInterceptor = (config) => {
         try {
+            if (!config?.headers) { config.headers = {}; }
+
+            const { device_id, device_name } = this.getDeviceHeaders();
+
+            if (this.device_id && this.device_name) {
+                config.headers["x-device-id"]       = device_id;
+                config.headers["x-device-name"]     = device_name;
+            }
+
+            return config
             
         }
         catch (error) {

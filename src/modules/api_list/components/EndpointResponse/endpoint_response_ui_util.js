@@ -1,3 +1,5 @@
+
+import LoggerUtil from "@ui/Logger/logger_util.js";
 import SVGIcons from "@ui/Resources/svg_icon_resource";
 
 class EndpointResponseUIUtil {
@@ -5,6 +7,7 @@ class EndpointResponseUIUtil {
         this.name               = name
         this.vm                 = vue_isnatnce
         this.content_manager    = this.vm?.proxy?.$content_manager;
+        this.logger             = new LoggerUtil({ prefix: this.name?.toUpperCase() });
     }
 
     // Method to retrun accordion prop
@@ -17,6 +20,8 @@ class EndpointResponseUIUtil {
 
         return {
             id: `endpoint_response_accordion_${response_type}`,
+
+            group_id: response_type,
 
             accordion_class_style: "p-0 gap-2 bg-white",
 

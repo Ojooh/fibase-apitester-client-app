@@ -1,5 +1,6 @@
 import { getCurrentInstance } from "vue";
 
+import LoggerUtil from "@ui/Logger/logger_util.js";
 import AccordionUI from "@ui/Display/Accordion/accordion_ui.vue";
 
 import EndpointResponseUIUtil from "./endpoint_response_ui_util";
@@ -9,7 +10,8 @@ class EndpointResponseUIController {
         this.name                   = "endpoint_detail_ui";
         this.vm                     = null; 
         this.content_manager        = null;
-        this.util                   = new EndpointResponseUIUtil(this.name, this.vm)
+        this.util                   = null;
+        this.logger                 = new LoggerUtil({ prefix: this.name?.toUpperCase() });
     }
 
     // Public method to expose components
@@ -28,13 +30,11 @@ class EndpointResponseUIController {
     getAppStateData = () => {
         this.vm                             = getCurrentInstance();
         this.content_manager                = this.vm?.proxy?.$content_manager;
-        this.util.vm                        = this.vm;
-        this.util.content_manager           = this.content_manager;
-
-        const accordion_prop                = this.util.getAccordionUIProp;
+        this.util                           = new EndpointResponseUIUtil(this.name, this.vm);
+        const accordion_prop                = this.util?.getAccordionUIProp;
     
 
-        return { accordion_prop  }
+        return { accordion_prop, util: this.util   }
     };
 
     // Computed variables
@@ -46,27 +46,27 @@ class EndpointResponseUIController {
     // Lifecycle: created
     handleOnCreatedLogic = () => {
         try {
-            console.log(`[Created] Component ${this.name} has been created`);
+            this.logger.log(`[Created] Component ${this.name} has been created`);
         } catch (error) {
-            console.error(`[Created] Error in Component ${this.name}:`, error);
+            this.logger.error(`[Created] Error in Component ${this.name}:`, error);
         }
     };
 
     // Lifecycle: mounted
     handleOnMountedLogic = () => {
         try {
-            console.log(`[Mounted] Component ${this.name} has been mounted`);
+            this.logger.log(`[Mounted] Component ${this.name} has been mounted`);
         } catch (error) {
-            console.error(`[Mounted] Error in Component ${this.name}:`, error);
+            this.logger.error(`[Mounted] Error in Component ${this.name}:`, error);
         }
     };
 
     // Lifecycle: beforeUnmount
     handleBeforeUnmountedLogic = () => {
         try {
-            console.log(`[BeforeUnmount] Component ${this.name} will unmount`);
+            this.logger.log(`[BeforeUnmount] Component ${this.name} will unmount`);
         } catch (error) {
-            console.error(`[BeforeUnmount] Error in component ${this.name}:`, error);
+            this.logger.error(`[BeforeUnmount] Error in component ${this.name}:`, error);
         }
     };
 
@@ -81,7 +81,6 @@ class EndpointResponseUIController {
             created: this.handleOnCreatedLogic,
             mounted: this.handleOnMountedLogic,
             beforeUnmount: this.handleBeforeUnmountedLogic,
-            methods: this.util.getUtilMethods()
         };
     };
 }

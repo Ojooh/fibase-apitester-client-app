@@ -1,5 +1,7 @@
 import { markRaw, getCurrentInstance } from "vue";
 
+import LoggerUtil from "@ui/Logger/logger_util.js";
+
 import XBarLoaderUI from "@ui/Loader/ListLoader/x_bar_loader_ui.vue";
 import AccordionUI from "@ui/Display/Accordion/accordion_ui.vue";
 import EndpointDetailUI from "../components/EndpointDetail/endpoint_detail_ui.vue";
@@ -11,7 +13,8 @@ class APIListViewController {
         this.name                   = "api_list_view_controller";
         this.vm                     = null; 
         this.content_manager        = null;
-        this.util                   = new APIListViewUtil(this.name, this.vm)
+        this.util                   = null;
+        this.logger                 = new LoggerUtil({ prefix: this.name?.toUpperCase() });
     }
 
     // Public method to expose components
@@ -22,11 +25,11 @@ class APIListViewController {
     // State data
     getAppStateData = () => {
         this.vm                             = getCurrentInstance();
-        this.util.vm                        = this.vm;
+        this.util                           = new APIListViewUtil(this.name, this.vm);
         this.content_manager                = this.vm?.proxy?.$content_manager;
-        const accordion_prop                = this.util.getAccordionUIProp;
+        const accordion_prop                = this.util?.getAccordionUIProp;
 
-        return { accordion_prop, loading: false }
+        return { accordion_prop, loading: true, route_groups: {}, util: this.util  }
     };
 
     // Computed variables
@@ -36,29 +39,29 @@ class APIListViewController {
     getAppWatchers = () => { return {}; };
 
     // Lifecycle: created
-    handleOnCreatedLogic = () => {
-        try {
-            console.log(`[Created] Component ${this.name} has been created`);
-        } catch (error) {
-            console.error(`[Created] Error in Component ${this.name}:`, error);
+    handleOnCreatedLogic = async () => {
+        try { await this.util?.getAllAPIRoutes() } 
+
+        catch (error) {
+            this.logger.error(`[Created] Error in Component ${this.name}:`, error);
         }
     };
 
     // Lifecycle: mounted
     handleOnMountedLogic = () => {
         try {
-            console.log(`[Mounted] Component ${this.name} has been mounted`);
+            this.logger.log(`[Mounted] Component ${this.name} has been mounted`);
         } catch (error) {
-            console.error(`[Mounted] Error in Component ${this.name}:`, error);
+            this.logger.error(`[Mounted] Error in Component ${this.name}:`, error);
         }
     };
 
     // Lifecycle: beforeUnmount
     handleBeforeUnmountedLogic = () => {
         try {
-            console.log(`[BeforeUnmount] Component ${this.name} will unmount`);
+            this.logger.log(`[BeforeUnmount] Component ${this.name} will unmount`);
         } catch (error) {
-            console.error(`[BeforeUnmount] Error in component ${this.name}:`, error);
+            this.logger.error(`[BeforeUnmount] Error in component ${this.name}:`, error);
         }
     };
 
@@ -72,7 +75,6 @@ class APIListViewController {
             created: this.handleOnCreatedLogic,
             mounted: this.handleOnMountedLogic,
             beforeUnmount: this.handleBeforeUnmountedLogic,
-            methods: this.util.getUtilMethods()
         };
     };
 }
