@@ -3,6 +3,6 @@ const LOCAL_STORAGE_KEY_FIELD_NAMES = {
     DEVICE_NAME: "okcf8959"
 }
 
-export default {
+export {
     LOCAL_STORAGE_KEY_FIELD_NAMES
 }

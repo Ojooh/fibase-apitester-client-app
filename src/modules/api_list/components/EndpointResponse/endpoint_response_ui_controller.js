@@ -22,7 +22,7 @@ class EndpointResponseUIController {
     // Method to get ui props
     getUIProps = () => { 
         return {
-            endpoint: { type: Object, required: true },
+            response_obj: { type: Object, required: true },
         } 
     }
 

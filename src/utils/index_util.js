@@ -6,6 +6,7 @@ import EventSystemUtil          from "./event_system_util";
 import GlobalVariableManager    from "./global_variable_manager_util.js";
 import InputTransformerUtil     from "./input_transformer_util.js";
 import InputValidatorUtil       from "./input_validation_util.js";
+import LocalStorageManagerUtil  from "./local_storage_manager_util.js";
 import MetaDataUtil             from "./meta_data_util.js"
 import SockectManagerUtil       from "./socket_manager_util.js"
 
@@ -22,6 +23,7 @@ class HelperUtil {
         this.event_system_util              = new EventSystemUtil();
         this.input_transformer_util         = new InputTransformerUtil(this?.ENV);
         this.input_validation_util          = new InputValidatorUtil(this?.ENV);
+        this.local_storage_util             = new LocalStorageManagerUtil(this?.ENV, this.encryptor_decryptor_util);
         this.meta_data_util                 = new MetaDataUtil();
         this.socket_manager_util            = new SockectManagerUtil(this?.ENV);
     }

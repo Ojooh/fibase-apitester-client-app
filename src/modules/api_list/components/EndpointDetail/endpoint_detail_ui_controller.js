@@ -45,8 +45,8 @@ class EndpointDetailUIController {
         const submit_btn_prop               = this.util?.getSubmitBtnProp();
 
         return { 
-            header_input_group_prop, query_prop, params_prop,  body_prop, submit_btn_prop,
-            util: this.util 
+            header_input_group_prop, query_prop, params_prop, body_prop, submit_btn_prop,
+            util: this.util, btn_loading: false, response_obj: {}
         }
     };
 

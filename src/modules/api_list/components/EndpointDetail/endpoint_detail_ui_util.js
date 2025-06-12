@@ -2,17 +2,56 @@
 import LoggerUtil from "@ui/Logger/logger_util.js";
 import SVGIcons from "@ui/Resources/svg_icon_resource";
 
+import APIListAPI from "@/api/api_list_api";
+
 class EndpointDetailUIUtil {
     constructor (name, vue_isnatnce) {
         this.name               = "endpoint_detail_ui_uitl"
         this.vm                 = vue_isnatnce
         this.content_manager    = this.vm?.proxy?.$content_manager;
+        this.ENV                = import.meta.env;
+        this.api                = new APIListAPI(this.ENV);
         this.logger             = new LoggerUtil({ prefix: this.name?.toUpperCase() });
     }
 
+    // Method to resolve endppoint url
+    #resolveEndpointPath = (endpoint, params = {}, base_prefix = '/api/v1') => {
+        let path = endpoint.startsWith(base_prefix) ? endpoint.slice(base_prefix.length) : endpoint;
+
+        path = path.replace(/:([a-zA-Z0-9_]+)/g, (_, key) => {
+            return params[key] !== undefined ? params[key] : `:${key}`; // fallback to original if missing
+        });
+
+        return path;
+    }
+
+    // method to get inpt data from input group
+    #getInputDataFromInputGroup = (input_group) => { return JSON.parse(input_group?.input_config?.value); }
+
     // method to handle submit btn click
-    handleSubmitBtnClickEvent = (e) => {
-        console.log(this.vm?.props.endpoint?.path)
+    handleSubmitBtnClickEvent = async (e) => {
+        try {
+            this.vm.data.btn_loading = true;
+            const { body_prop, query_prop, params_prop, header_input_group_prop } = this?.vm?.data;
+            const { path, method, headers, query, params, body } = this.vm?.props?.endpoint;
+            const updated_body     = body && Object.keys(body).length ? this.#getInputDataFromInputGroup(body_prop) : null;
+            const updated_query    = query && Object.keys(query).length ? this.#getInputDataFromInputGroup(query_prop) : null;
+            const updated_params   = params && Object.keys(params).length ? this.#getInputDataFromInputGroup(params_prop) : {};
+            const updaed_headers   = headers && Object.keys(header_input_group_prop).length ? this.#getInputDataFromInputGroup(header_input_group_prop) : {};
+            const resolved_url     = this.#resolveEndpointPath(path, updated_params);
+
+            const { status, msg, data, full_response } = await this.api.testEndpoint(resolved_url, method, updated_query, updated_body, updaed_headers);
+
+            console.log({ full_response })
+            this.vm.data.response_obj = full_response;
+
+            return;
+        }
+        catch(error) {
+            this.logger.error(`Error Occurred in ${this.name}`, error)
+            return;
+        }
+        finally { this.vm.data.btn_loading = false }
     }
 
     // Method to get submit button prop
@@ -28,6 +67,7 @@ class EndpointDetailUIUtil {
             }
         }
     }
+
 
     // Method to get body input group
     getBodyInputGroupProp = () => {

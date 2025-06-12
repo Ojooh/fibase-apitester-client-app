@@ -1,14 +1,18 @@
 
+import LoggerUtil from "@ui/Logger/logger_util.js";
 import { LOCAL_STORAGE_KEY_FIELD_NAMES } from "@/enums/constants.enums";
+
 
 class LocalStorageManagerUtil {
     constructor(env_variables, encryptor_decryptor_util) {
+        this.name                       = "local_storage_manager_util";
         this.env_variables              = env_variables
         this.encryptor_decryptor_util   = encryptor_decryptor_util;
+        this.logger                 = new LoggerUtil({ prefix: this.name?.toUpperCase() });
     }
 
     // Method to get temp data
-    getTempData = (key) => {
+    getData = (key) => {
         try {
             if(!key) { return null }
 
@@ -21,14 +25,14 @@ class LocalStorageManagerUtil {
 
             const raw_data = localStorage.getItem(field_name);
 
-            if (!raw_encrypted) return null;
+            if (!raw_data) return null;
 
             const decrypted = this.encryptor_decryptor_util.decrypt(raw_data);
 
-            return decrypted ? JSON.parse(decrypted)?.encrypted_data : null;
+            return decrypted ? decrypted?.encrypted_data : null;
         }
         catch (err) {
-			console.warn(`Failed to decrypt localStorage key: ${field_name}`, err);
+			this.logger.error(`Failed to decrypt localStorage key: ${key}`, err);
 			return null;
 		}
     }
@@ -37,12 +41,12 @@ class LocalStorageManagerUtil {
     storeData = (key, value) => {
         try {
             if (!key || value == null) {
-                console.error("Key or value missing");
+                this.logger.error("Key or value missing");
                 return false;
             }
 
             if ((typeof value === "object" && Object.keys(value).length <= 0) || (Array.isArray(value) && value.length <= 0)) {
-                console.error("Invalid value: empty object or array");
+                this.logger.error("Invalid value: empty object or array");
                 return false;
             }
 
@@ -56,15 +60,15 @@ class LocalStorageManagerUtil {
 
             if (!keys.includes(key)) { keys.push(key); }
 
-            const encrypted = this.encryptor_decryptor_util.encrypt(JSON.stringify(data_obj))
+            const { encrypted_data } = this.encryptor_decryptor_util.encrypt(JSON.stringify(data_obj))
 
             localStorage.removeItem(field_name);
-            localStorage.setItem(field_name, encrypted);
+            localStorage.setItem(field_name, encrypted_data);
             localStorage.setItem(keys_field_name, JSON.stringify(keys));
             return true
         }
         catch (err) {
-			console.error("Failed to encrypt and store data", err);
+			this.logger.error("Failed to encrypt and store data", err);
 			return false;
 		}
     }

@@ -8,6 +8,18 @@ class APIListAPI extends APIBase {
         const config = { url, params, method: "GET" };
         return await this.queryAPI(config);
     }
+
+    testEndpoint = async (url, method, query, body, headers) => {
+        const config = { url, method };
+
+        if(query && Object.keys(query).length) { config.params = query }
+
+        if(body && Object.keys(body).length) { config.data = body }
+
+        if(headers && Object.keys(headers).length) { config.headers = headers }
+
+        return await this.queryAPI(config);
+    }
 }
 
 export default APIListAPI;

@@ -11,6 +11,7 @@ class BaseAPI {
         this.is_staging         = this.ENV?.VITE_MODE === "staging";
         this.helper             = new HelperUtil(this.ENV);
         this.device_util        = this.helper?.device_fingerprint_util;
+        this.local_storage_util = this.helper?.local_storage_util;
         
         this.setAPIBaseInsance();
     }
@@ -40,7 +41,7 @@ class BaseAPI {
 
             if (!this.is_production && !this.is_staging) { console.log({ status, msg, data }) }
 
-            return { status, msg, data };
+            return { status, msg, data, full_response: response };
         }
         catch (error) {
             if (this.is_production) { console.log({ api_error: error }); }
@@ -48,25 +49,25 @@ class BaseAPI {
             const error_status_code     = error?.response?.status;
             const error_msg             = error?.response?.data?.msg || error.message || "invalid_error_request";
 
-            if (error_status_code == 401 || error_status_code == 429) { return { status: "logout", msg: error_msg } }
+            if (error_status_code == 401 || error_status_code == 429) { return { status: "logout", msg: error_msg, full_response: error?.response } }
 
-            return { status: 'error', msg: error_msg };
+            return { status: 'error', msg: error_msg, full_response: error?.response };
         }
     }
 
     getDeviceHeaders = () => {
         const local_id_key      = "DEVICE_ID";
         const local_name_key    = "DEVICE_NAME";
-        let device_id           = localStorage.getItem(local_id_key);
-        let device_name         = localStorage.getItem(local_name_key);
+        let device_id           = this.local_storage_util.getData(local_id_key);
+        let device_name         = this.local_storage_util.getData(local_name_key);
 
         // Generate and store if not already set
         if (!device_id && this.device_util) {
             device_id       = this.device_util.generateFingerprint();
             device_name     = this.device_util.getDeviceName();
 
-            localStorage.setItem(local_id_key, device_id);
-            localStorage.setItem(local_name_key, this.device_name);
+            this.local_storage_util.storeData(local_id_key, device_id);
+            this.local_storage_util.storeData(local_name_key, device_name);
         }
 
         return { device_id, device_name };
@@ -78,7 +79,7 @@ class BaseAPI {
 
             const { device_id, device_name } = this.getDeviceHeaders();
 
-            if (this.device_id && this.device_name) {
+            if (device_id && device_name) {
                 config.headers["x-device-id"]       = device_id;
                 config.headers["x-device-name"]     = device_name;
             }
