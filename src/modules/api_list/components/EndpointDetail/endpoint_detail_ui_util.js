@@ -68,7 +68,6 @@ class EndpointDetailUIUtil {
         }
     }
 
-
     // Method to get body input group
     getBodyInputGroupProp = () => {
         const { endpoint }                  = this.vm?.props
@@ -123,7 +122,9 @@ class EndpointDetailUIUtil {
     // Method to get headers input group
     getHeaderInputGroupProp = () => {
         const { endpoint } = this.vm?.props
-        const default_header_config_value   = JSON.stringify(endpoint?.headers, null, 4);
+        const { device_id, device_name }    = this.api.getDeviceHeaders();
+        const updated_headers               = {...endpoint?.headers, "x-device-id": device_id, "x-device-name": device_name}
+        const default_header_config_value   = JSON.stringify(updated_headers, null, 4);
         const header_content_data           = this.content_manager?.get("content_resource.api_list_view.endpoint_detail.fieldset");
 
         const { headers_label_text, headers_placeholder_text } = header_content_data;

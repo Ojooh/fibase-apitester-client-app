@@ -16,7 +16,7 @@ class EndpointResponseUIUtil {
 
         const { response_header_title_text, response_body_title_text } = header_content_data;
 
-        const title_text = response_type === "response_header" ? response_header_title_text : response_body_title_text;
+        const title_text = response_type.includes("response_header") ? response_header_title_text : response_body_title_text;
 
         return {
             id: `endpoint_response_accordion_${response_type}`,
@@ -39,7 +39,9 @@ class EndpointResponseUIUtil {
 
             accordion_body_id: `accordion_body_${response_type}`,
 
-            accordion_body_class_style: "border-[#232759] p-0",
+            accordion_body_class_style: "border-[#232759] p-0 hidden",
+
+            accordion_body_show_class_style: "border-[#232759] p-0 block"
         }
     }
 

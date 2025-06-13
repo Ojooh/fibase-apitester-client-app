@@ -16,7 +16,7 @@
 
             </FieldsetUI>
 
-            <EndpointResponseUI :response_obj="response_obj" />
+            <EndpointResponseUI :id="endpoint?.path" :response_obj="response_obj" />
         </div>
     </section>
 </template>

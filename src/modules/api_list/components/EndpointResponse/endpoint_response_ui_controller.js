@@ -23,6 +23,8 @@ class EndpointResponseUIController {
     getUIProps = () => { 
         return {
             response_obj: { type: Object, required: true },
+
+            id: { type: String, require: true }
         } 
     }
 
