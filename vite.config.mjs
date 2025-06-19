@@ -31,7 +31,7 @@ export default defineConfig({
     build: {
         outDir: "./dist",
 
-        rollupOptions: { input: "./public/index.html" }
+        rollupOptions: { input: "./index.html" }
     },
     optimizeDeps: {  include: ['src/**/*.vue', "../fi-ui-toolkit/**/*.vue"] },
 

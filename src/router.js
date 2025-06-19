@@ -16,7 +16,7 @@ class RouterManager {
 
     // Method to create the router instance
     createRouter = () => {
-        return createRouter({ history: createWebHistory("/"), routes: this.routes });
+        return createRouter({ history: createWebHistory("/api-tester-ui"), routes: this.routes });
     }
 
     getRoutes = () => {
