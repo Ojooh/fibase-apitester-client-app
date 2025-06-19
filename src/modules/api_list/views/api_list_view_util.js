@@ -48,7 +48,7 @@ class APIListViewUtil {
 
             const { status, msg, data } = await this.api.getAllAPIRoutes();
 
-            this.vm.data.route_groups = data;
+            this.vm.data.route_groups = data && Object.keys(data).length > 0 ? data : {};
 
             return data
         }

@@ -2,6 +2,7 @@ import { getCurrentInstance } from "vue";
 
 import LoggerUtil from "@ui/Logger/logger_util.js";
 import AccordionUI from "@ui/Display/Accordion/accordion_ui.vue";
+import JSONViewerUI from "@ui/Display/JSONViewer/json_viewer_ui.vue";
 
 import EndpointResponseUIUtil from "./endpoint_response_ui_util";
 
@@ -16,7 +17,7 @@ class EndpointResponseUIController {
 
     // Public method to expose components
     getUIComponents = () => {
-        return { AccordionUI };
+        return { AccordionUI, JSONViewerUI };
     };
 
     // Method to get ui props

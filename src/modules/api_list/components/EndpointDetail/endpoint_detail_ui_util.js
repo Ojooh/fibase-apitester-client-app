@@ -15,7 +15,7 @@ class EndpointDetailUIUtil {
     }
 
     // Method to resolve endppoint url
-    #resolveEndpointPath = (endpoint, params = {}, base_prefix = '/api/v1') => {
+    #resolveEndpointPath = (endpoint, params = {}, base_prefix = '/web-api/v1') => {
         let path = endpoint.startsWith(base_prefix) ? endpoint.slice(base_prefix.length) : endpoint;
 
         path = path.replace(/:([a-zA-Z0-9_]+)/g, (_, key) => {
